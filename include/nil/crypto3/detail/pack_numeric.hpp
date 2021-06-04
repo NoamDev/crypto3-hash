@@ -35,25 +35,22 @@ namespace nil {
         namespace detail {
             using namespace nil::crypto3::multiprecision;
 
-            template<typename Endianness, int InValueBits, int OutValueBits, typename InputIterator, typename Backend,
+            template<typename InputIterator, typename Backend,
                      expression_template_option ExpressionTemplates>
             inline void pack(InputIterator first, InputIterator last, number<Backend, ExpressionTemplates> &out) {
                 import_bits(out, first, last);
-                BOOST_ASSERT(msb(out) == OutValueBits);
             }
 
-            template<typename Endianness, int OutValueBits, typename InputType, typename Backend,
+            template<typename InputType, typename Backend,
                      expression_template_option ExpressionTemplates>
             inline void pack(const InputType &in, number<Backend, ExpressionTemplates> &out) {
                 import_bits(out, in.begin(), in.end());
-                BOOST_ASSERT(msb(out) == OutValueBits);
             }
 
-            template<typename Endianness, int OutValueBits, typename OutputType, typename Backend,
+            template<typename OutputType, typename Backend,
                      expression_template_option ExpressionTemplates>
-            inline void pack(const number<Backend, ExpressionTemplates> &in, OutputType &out) {
-                export_bits(in, out);
-                BOOST_ASSERT(msb(out) == OutValueBits);
+            inline void pack(const number<Backend, ExpressionTemplates> &in, OutputType &out, unsigned chunk_size) {
+                export_bits(in, out, chunk_size);
             }
         }    // namespace detail
     }        // namespace crypto3
